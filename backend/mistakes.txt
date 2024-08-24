@@ -1,0 +1,15 @@
+List of errors:
+
+- duplicate server
+
+- sql error following tozo sql statements not compatible with sqlite 
+
+- validating request
+    - TypeError: Cannot create schema for <class 'app.Card'> - try installing msgspec or pydantic
+    - tutorial didnt instruct [pydantic] or [msgspec]
+    - careful inspection of pip list showed pydantic was already installed on tutorial
+
+    Solution:
+    - installed pip install quart-schema[pydantic]
+ 
+ - not using the keyword "data" and instead using "user"
