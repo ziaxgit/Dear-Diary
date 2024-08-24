@@ -3,6 +3,8 @@ from quart_db import QuartDB
 from quart_schema import QuartSchema, validate_request, validate_response
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Optional
+
 
 app = Quart(__name__)
 QuartDB(app, url='sqlite:///database.db')
@@ -36,16 +38,48 @@ async def create_user(data: UserInput) -> User:
 
 @dataclass
 class DiaryInput:
+    user_id: int
     title: str
     description: str
-    diary_date: datetime
-    did_not_go_well: str
-    made_me_smile: str
+    did_not_go_well: str | None
+    made_me_smile: str | None
+    grateful_for: str | None
+    image_url: str | None
+
+@dataclass
+class Diary:
+    id: int  # Non-default field first
+    user_id: int
+    title: str
+    description: str
+    created: datetime  # Non-default field
+    did_not_go_well: str | None
+    made_me_smile: str | None
+    grateful_for: str | None
+    image_url: str | None
 
 @app.post('/diaries')
 @validate_request(DiaryInput)
-@validate_response(User)
-async def create_diary(data: DiaryInput) -> User:
+@validate_response(Diary)
+async def create_diary(data: DiaryInput) -> Diary:
     """Create a new diary entry"""
-    # Implementation goes here
-    pass
+    result = await g.connection.fetch_one(
+        """INSERT INTO diaries (user_id, title, description, did_not_go_well, made_me_smile, grateful_for, image_url)
+        VALUES (:user_id, :title, :description, :did_not_go_well, :made_me_smile, :grateful_for, :image_url)
+        RETURNING id, user_id, created, title, description, did_not_go_well, made_me_smile, grateful_for, image_url""",
+        {
+            "user_id": data.user_id,
+            "title": data.title,
+            "description": data.description,
+            "did_not_go_well": data.did_not_go_well,
+            "made_me_smile": data.made_me_smile,
+            "grateful_for": data.grateful_for,
+            "image_url": data.image_url,
+        }
+    )
+    
+    # # Not sure why this is needed
+    # if result is None:
+    #     raise ValueError("Failed to create diary entry.")
+
+    return Diary(**result)

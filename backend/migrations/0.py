@@ -19,7 +19,8 @@ async def migrate(connection: Connection) -> None:
             created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             did_not_go_well TEXT,
             made_me_smile TEXT,
-            grateful_for TEXT
+            grateful_for TEXT,
+            image_url TEXT
         )"""
     )
 

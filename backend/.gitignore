@@ -1,7 +1,8 @@
-# Ignore Python virtual environment
+*.db
+*.sqlite
+
 venv/
 
-# Other typical Python ignores
 __pycache__/
 *.py[cod]
 *.pyo
