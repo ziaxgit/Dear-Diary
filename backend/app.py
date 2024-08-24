@@ -22,6 +22,21 @@ class User:
     name: str
     email: str
     created: datetime
+    
+
+@dataclass 
+class Users:
+    users: list[User]
+
+@app.get('/users')
+@validate_response(Users)
+async def get_users() -> Users:
+    """Get all users"""
+    query = ("""SELECT id, created, name, email
+        FROM users""")
+    users = [User(**row) async for row in g.connection.iterate(query) ]
+    return Users(users=users)
+    # need more clarification on how this works
 
 @app.post('/users')
 @validate_request(UserInput)
@@ -36,6 +51,7 @@ async def create_user(data: UserInput) -> User:
     )
     return User(**result)
 
+
 @dataclass
 class DiaryInput:
     user_id: int
@@ -48,11 +64,11 @@ class DiaryInput:
 
 @dataclass
 class Diary:
-    id: int  # Non-default field first
+    id: int  
     user_id: int
     title: str
     description: str
-    created: datetime  # Non-default field
+    created: datetime  
     did_not_go_well: str | None
     made_me_smile: str | None
     grateful_for: str | None
@@ -77,9 +93,6 @@ async def create_diary(data: DiaryInput) -> Diary:
             "image_url": data.image_url,
         }
     )
-    
-    # # Not sure why this is needed
-    # if result is None:
-    #     raise ValueError("Failed to create diary entry.")
 
     return Diary(**result)
+
