@@ -13,3 +13,6 @@ List of errors:
     - installed pip install quart-schema[pydantic]
  
  - not using the keyword "data" and instead using "user"
+
+ - trouble with dynamic route, error with dataclass
+    - returned 

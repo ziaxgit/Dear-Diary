@@ -3,7 +3,6 @@ from quart_db import QuartDB
 from quart_schema import QuartSchema, validate_request, validate_response
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
 
 
 app = Quart(__name__)
@@ -93,7 +92,6 @@ async def create_diary(data: DiaryInput) -> Diary:
             "image_url": data.image_url,
         }
     )
-
     return Diary(**result)
 
 
@@ -109,16 +107,15 @@ async def get_diaries() -> Diaries:
     query = ("""SELECT * FROM diaries""")
     diaries = [Diary(**row) async for row in g.connection.iterate(query) ]
     return Diaries(diaries=diaries)
-    # need more clarification on how this works
 
-# @app.get('/users/<int:user_id>/diaries')
-# # @validate_response(Diaries)
-# async def get_user_diaries(user_id: id) -> Diaries:
-#     """Get all diaries for a specific user"""
-#     query = """
-#         SELECT id, user_id, title, description, created, did_not_go_well made_me_smile, grateful_for, image_url
-#         FROM diaries
-#         WHERE user_id = :user_id
-#         """
-#     values = {"user_id": user_id}
-#     return [Diary(**row) async for row in g.connection.iterate(query, values)]
+@app.get('/users/<int:user_id>/diaries')
+@validate_response(Diaries)
+async def get_user_diaries(user_id: id) -> Diaries:
+    """Get all diaries for a specific user"""
+    query = """
+        SELECT * FROM diaries
+        WHERE user_id = :user_id
+        """
+    values = {"user_id": user_id}
+    diaries = [Diary(**row) async for row in g.connection.iterate(query, values) ]
+    return Diaries(diaries=diaries)
