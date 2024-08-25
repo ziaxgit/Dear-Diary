@@ -1,4 +1,4 @@
-from quart import g, Quart
+from quart import g, Quart, redirect
 from quart_db import QuartDB
 from quart_schema import QuartSchema, validate_request, validate_response
 from dataclasses import dataclass
@@ -26,6 +26,11 @@ class User:
 @dataclass 
 class Users:
     users: list[User]
+
+@app.get('/')
+async def index():
+    """Redirect to API documentation"""
+    return redirect("http://127.0.0.1:5000/docs")
 
 @app.get('/users')
 @validate_response(Users)
