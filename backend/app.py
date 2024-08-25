@@ -1,13 +1,20 @@
+import os
 from quart import g, Quart, redirect
 from quart_db import QuartDB
 from quart_schema import QuartSchema, validate_request, validate_response
 from dataclasses import dataclass
 from datetime import datetime
 import bcrypt
+from quart_auth import (
+    AuthUser, current_user, login_required, login_user, logout_user, QuartAuth
+)
 
 app = Quart(__name__)
 QuartDB(app, url='sqlite:///database.db')
 QuartSchema(app)
+app.secret_key = os.environ["APP_SECRET_KEY"]
+QuartAuth(app)
+auth_manager = Auth
 
 @dataclass
 class UserInput:
@@ -22,7 +29,6 @@ class User:
     email: str
     created: datetime
     
-
 @dataclass 
 class Users:
     users: list[User]
@@ -49,7 +55,7 @@ async def create_user(data: UserInput) -> User:
     """Register new user account"""
     check_email_exists = await g.connection.fetch_one("SELECT email FROM users WHERE email = :email", {"email": data.email})
     if check_email_exists:
-        return {"error": "User account already exists. Please log in."}, 400
+        return {"message": "User account already exists. Please log in."}, 400
     else:
         hashed_password = bcrypt.hashpw(data.password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
         
@@ -60,6 +66,29 @@ async def create_user(data: UserInput) -> User:
         {"name": data.name, "email": data.email, "password_hash": hashed_password},)
         
         return User(**result)
+
+@dataclass
+class LoginInput:
+    email: str
+    password: str
+
+@app.post('/login')
+@login_required
+@validate_request(LoginInput)
+async def user_login(data: UserInput):
+    """Login existing user account"""
+    fetch_user = await g.connection.fetch_one("SELECT * FROM users WHERE email = :email", {"email": data.email})
+    if fetch_user:
+        print("")
+        print(fetch_user)
+        print("")
+        if bcrypt.checkpw(data.password.encode('utf-8'), fetch_user['password_hash'].encode('utf-8')):
+            return {"user found": fetch_user}, 200
+        else:
+            return {"message": "Incorrect email or password. Please try again."}, 400
+    else:
+        return {"message": "User account does not exist. Please register."}, 400
+
 
 
 @dataclass
