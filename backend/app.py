@@ -3,7 +3,7 @@ from quart_db import QuartDB
 from quart_schema import QuartSchema, validate_request, validate_response
 from dataclasses import dataclass
 from datetime import datetime
-
+import bcrypt
 
 app = Quart(__name__)
 QuartDB(app, url='sqlite:///database.db')
@@ -37,18 +37,24 @@ async def get_users() -> Users:
     return Users(users=users)
     # need more clarification on how this works
 
-@app.post('/users')
+@app.post('/register')
 @validate_request(UserInput)
 @validate_response(User)
 async def create_user(data: UserInput) -> User:
-    """Create a new user"""
-    result = await g.connection.fetch_one(
+    """Register new user account"""
+    check_email_exists = await g.connection.fetch_one("SELECT email FROM users WHERE email = :email", {"email": data.email})
+    if check_email_exists:
+        return {"error": "User account already exists. Please log in."}, 400
+    else:
+        hashed_password = bcrypt.hashpw(data.password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        
+        result = await g.connection.fetch_one(
         """INSERT INTO users (name, email, password_hash)
         VALUES (:name, :email, :password_hash)
         RETURNING user_id, name, email, created""",
-        {"name": data.name, "email": data.email, "password_hash": data.password},
-    )
-    return User(**result)
+        {"name": data.name, "email": data.email, "password_hash": hashed_password},)
+        
+        return User(**result)
 
 
 @dataclass
