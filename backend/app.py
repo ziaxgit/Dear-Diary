@@ -96,3 +96,29 @@ async def create_diary(data: DiaryInput) -> Diary:
 
     return Diary(**result)
 
+
+@dataclass
+class Diaries:
+    diaries: list[Diary]
+
+
+@app.get('/diaries')
+@validate_response(Diaries)
+async def get_diaries() -> Diaries:
+    """Get all diaries"""
+    query = ("""SELECT * FROM diaries""")
+    diaries = [Diary(**row) async for row in g.connection.iterate(query) ]
+    return Diaries(diaries=diaries)
+    # need more clarification on how this works
+
+# @app.get('/users/<int:user_id>/diaries')
+# # @validate_response(Diaries)
+# async def get_user_diaries(user_id: id) -> Diaries:
+#     """Get all diaries for a specific user"""
+#     query = """
+#         SELECT id, user_id, title, description, created, did_not_go_well made_me_smile, grateful_for, image_url
+#         FROM diaries
+#         WHERE user_id = :user_id
+#         """
+#     values = {"user_id": user_id}
+#     return [Diary(**row) async for row in g.connection.iterate(query, values)]
