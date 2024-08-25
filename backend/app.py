@@ -17,7 +17,7 @@ class UserInput:
 
 @dataclass
 class User:
-    id: int
+    user_id: int
     name: str
     email: str
     created: datetime
@@ -31,7 +31,7 @@ class Users:
 @validate_response(Users)
 async def get_users() -> Users:
     """Get all users"""
-    query = ("""SELECT id, created, name, email
+    query = ("""SELECT user_id, created, name, email
         FROM users""")
     users = [User(**row) async for row in g.connection.iterate(query) ]
     return Users(users=users)
@@ -45,7 +45,7 @@ async def create_user(data: UserInput) -> User:
     result = await g.connection.fetch_one(
         """INSERT INTO users (name, email, password_hash)
         VALUES (:name, :email, :password_hash)
-        RETURNING id, name, email, created""",
+        RETURNING user_id, name, email, created""",
         {"name": data.name, "email": data.email, "password_hash": data.password},
     )
     return User(**result)
@@ -63,7 +63,7 @@ class DiaryInput:
 
 @dataclass
 class Diary:
-    id: int  
+    diary_id: int  
     user_id: int
     title: str
     description: str
@@ -81,7 +81,7 @@ async def create_diary(data: DiaryInput) -> Diary:
     result = await g.connection.fetch_one(
         """INSERT INTO diaries (user_id, title, description, did_not_go_well, made_me_smile, grateful_for, image_url)
         VALUES (:user_id, :title, :description, :did_not_go_well, :made_me_smile, :grateful_for, :image_url)
-        RETURNING id, user_id, created, title, description, did_not_go_well, made_me_smile, grateful_for, image_url""",
+        RETURNING diary_id, user_id, created, title, description, did_not_go_well, made_me_smile, grateful_for, image_url""",
         {
             "user_id": data.user_id,
             "title": data.title,
