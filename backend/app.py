@@ -14,7 +14,7 @@ QuartDB(app, url='sqlite:///database.db')
 QuartSchema(app)
 app.secret_key = os.environ["APP_SECRET_KEY"]
 QuartAuth(app)
-auth_manager = Auth
+
 
 @dataclass
 class UserInput:
@@ -46,7 +46,6 @@ async def get_users() -> Users:
         FROM users""")
     users = [User(**row) async for row in g.connection.iterate(query) ]
     return Users(users=users)
-    # need more clarification on how this works
 
 @app.post('/register')
 @validate_request(UserInput)
@@ -73,23 +72,24 @@ class LoginInput:
     password: str
 
 @app.post('/login')
-@login_required
 @validate_request(LoginInput)
 async def user_login(data: UserInput):
     """Login existing user account"""
     fetch_user = await g.connection.fetch_one("SELECT * FROM users WHERE email = :email", {"email": data.email})
     if fetch_user:
-        print("")
-        print(fetch_user)
-        print("")
         if bcrypt.checkpw(data.password.encode('utf-8'), fetch_user['password_hash'].encode('utf-8')):
+            login_user(AuthUser(fetch_user['user_id'], fetch_user['email']))
             return {"user found": fetch_user}, 200
         else:
             return {"message": "Incorrect email or password. Please try again."}, 400
     else:
-        return {"message": "User account does not exist. Please register."}, 400
+        return {"message": "User account does not exist. Please register."}, 404    
 
-
+@app.post('/logout')
+async def user_logout():
+    """Logout existing user account"""
+    logout_user()
+    return {"message": "User logged out successfully."}, 200
 
 @dataclass
 class DiaryInput:
@@ -149,6 +149,7 @@ async def get_diaries() -> Diaries:
     return Diaries(diaries=diaries)
 
 @app.get('/users/<int:user_id>/diaries')
+@login_required
 @validate_response(Diaries)
 async def get_user_diaries(user_id: id) -> Diaries:
     """Get all diaries for a specific user"""
