@@ -1,5 +1,5 @@
 import os
-from quart import g, Quart, redirect
+from quart import g, Quart, redirect, abort
 from quart_db import QuartDB
 from quart_schema import QuartSchema, validate_request, validate_response
 from dataclasses import dataclass
@@ -160,3 +160,26 @@ async def get_user_diaries(user_id: id) -> Diaries:
     values = {"user_id": user_id}
     diaries = [Diary(**row) async for row in g.connection.iterate(query, values) ]
     return Diaries(diaries=diaries)
+
+@app.put('/diaries/<int:diary_id>')
+@validate_request(DiaryInput)
+@validate_response(Diary)
+async def update_diary(diary_id:int, data: DiaryInput) -> Diary:
+    """Update an existing diary entry"""
+    result = await g.connection.fetch_one(
+        """
+        UPDATE diaries 
+        SET title = :title, description = :description, did_not_go_well = :did_not_go_well, made_me_smile = :made_me_smile, grateful_for = :grateful_for, image_url = :image_url, user_id = :user_id WHERE diary_id = :diary_id RETURNING diary_id, user_id, created, title, description, did_not_go_well, made_me_smile, grateful_for, image_url
+        """, {
+            "diary_id": diary_id,
+            "title": data.title,
+            "description": data.description,
+            "did_not_go_well": data.did_not_go_well,
+            "made_me_smile": data.made_me_smile,
+            "grateful_for": data.grateful_for,
+            "image_url": data.image_url,
+            "user_id": data.user_id,
+        })
+    if result is None:
+        return {"message": "Diary not found"}, 404
+    return Diary(**result)
