@@ -16,3 +16,5 @@ List of errors:
 
  - trouble with dynamic route, error with dataclass
 
+- couldnt figure out how to group routes in /docs 
+    - found "tagging" in quart_schema docs
