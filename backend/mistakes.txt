@@ -18,3 +18,7 @@ List of errors:
 
 - couldnt figure out how to group routes in /docs 
     - found "tagging" in quart_schema docs
+
+- error switching to bearer mode
+    - could not find about AuthManager as shown in tutorial
+    - found from docs -> auth_manager = QuartAuth(app)

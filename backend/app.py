@@ -14,7 +14,17 @@ from quart_auth import (
     QuartAuth,
 )
 
+from quart_cors import cors
+
+
 app = Quart(__name__)
+
+app = cors(app, allow_origin="http://localhost:5173", allow_credentials=True)
+
+app.config["QUART_AUTH_MODE"] = "bearer"
+
+auth_manager = QuartAuth(app)
+
 QuartDB(app, url="sqlite:///database.db")
 QuartSchema(
     app,
@@ -26,7 +36,6 @@ QuartSchema(
     ],
 )
 app.secret_key = os.environ["APP_SECRET_KEY"]
-QuartAuth(app)
 
 
 @dataclass
@@ -77,7 +86,6 @@ async def create_user(data: UserInput) -> User:
         RETURNING user_id, name, email, created""",
             {"name": data.name, "email": data.email, "password_hash": hashed_password},
         )
-
         return User(**result)
 
 
@@ -100,7 +108,9 @@ async def user_login(data: UserInput):
             data.password.encode("utf-8"), fetch_user["password_hash"].encode("utf-8")
         ):
             login_user(AuthUser(fetch_user["user_id"], fetch_user["email"]))
-            return {"user found": fetch_user}, 200
+            token = auth_manager.dump_token(current_user.auth_id)
+            print(token)
+            return {"token": token}, 200
         else:
             return {"message": "Incorrect email or password. Please try again."}, 400
     else:
@@ -146,6 +156,7 @@ class Diaries:
 
 @app.get("/users")
 @tag(["User"])
+@login_required
 @validate_response(Users)
 async def get_users() -> Users:
     """Get all users"""
