@@ -55,6 +55,12 @@ export default function LogIn() {
       id="login"
       className="bg-blue-100 flex flex-col items-center min-h-dvh"
     >
+      <Toaster
+        containerStyle={{
+          top: "11rem",
+        }}
+      />
+
       <h1 className="text-5xl font-semibold text-gray-700 mt-12">
         Dear Diary...
       </h1>
@@ -98,7 +104,12 @@ export default function LogIn() {
           >
             {isSubmitting ? "Loggin in..." : "Submit"}
           </button>
-          <Toaster />
+          <p className="mt-4 text-center">
+            Don't have an account?{" "}
+            <a className="text-blue-500" href="/register">
+              Register
+            </a>
+          </p>
         </form>
       </div>
     </section>

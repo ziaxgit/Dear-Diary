@@ -43,7 +43,7 @@ export default function Register() {
 
   return (
     <section
-      id="login"
+      id="register"
       className="bg-blue-100 flex flex-col items-center min-h-dvh"
     >
       <h1 className="text-5xl font-semibold text-gray-700 mt-12">
@@ -59,7 +59,7 @@ export default function Register() {
             <label>Name</label>
             <input
               {...register("name")}
-              className="p-2 border-[1px] border-gray-600 rounded-md
+              className="p-2 border-[1px] border-gray-600 rounded-md bg-gray-50
             "
               type="text"
               placeholder="Enter your name"
@@ -72,7 +72,7 @@ export default function Register() {
             <label>Email</label>
             <input
               {...register("email")}
-              className="p-2 border-[1px] border-gray-600 rounded-md
+              className="p-2 border-[1px] border-gray-600 rounded-md bg-gray-50
             "
               type="text"
               placeholder="Enter your email"
@@ -85,7 +85,7 @@ export default function Register() {
             <label>Password</label>
             <input
               {...register("password")}
-              className="p-2 border-[1px] border-gray-600 rounded-md
+              className="p-2 border-[1px] border-gray-600 rounded-md bg-gray-50
             "
               type="password"
               placeholder="Enter your password"
