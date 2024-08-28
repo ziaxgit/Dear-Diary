@@ -63,7 +63,8 @@ export default function Register() {
         }}
       />
 
-      <h1 className="text-5xl font-semibold text-gray-700 mt-12">
+      <h1 className="text-5xl font-semibold text-gray-700 mt-10">
+        {" "}
         Dear Diary...
       </h1>
 
