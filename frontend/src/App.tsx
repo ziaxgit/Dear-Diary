@@ -17,7 +17,7 @@ interface UserContextType {
   setCurrentUser: (user: User | null) => void;
 }
 
-const UserContext = createContext<UserContextType>({
+export const UserContext = createContext<UserContextType>({
   currentUser: null,
   setCurrentUser: () => {},
 });
