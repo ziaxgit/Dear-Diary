@@ -20,7 +20,7 @@ export default function LogIn() {
     register,
     handleSubmit,
     resetField,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
   } = useForm<UserDataType>({
     resolver: zodResolver(loginSchema),
   });
