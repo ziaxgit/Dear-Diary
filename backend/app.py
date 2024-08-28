@@ -64,11 +64,16 @@ async def index():
     return redirect("http://127.0.0.1:5000/docs")
 
 
+@dataclass
+class ReturnUser(User):
+    token: str
+
+
 @app.post("/users/register")
 @tag(["User"])
 @validate_request(UserInput)
-@validate_response(User)
-async def create_user(data: UserInput) -> User:
+@validate_response(ReturnUser)
+async def create_user(data: UserInput) -> ReturnUser:
     """Register new user account"""
     check_email_exists = await g.connection.fetch_one(
         "SELECT email FROM users WHERE email = :email", {"email": data.email}
@@ -90,7 +95,15 @@ async def create_user(data: UserInput) -> User:
                 "password_hash": hashed_password,
             },
         )
-        return User(**result)
+        login_user(AuthUser(result["user_id"]))
+        token = auth_manager.dump_token(current_user.auth_id)
+        return ReturnUser(
+            user_id=result["user_id"],
+            name=result["name"],
+            email=result["email"],
+            created=result["created"],
+            token=token,
+        )
 
 
 @dataclass
@@ -102,7 +115,8 @@ class LoginInput:
 @app.post("/login")
 @tag(["Auth"])
 @validate_request(LoginInput)
-async def user_login(data: UserInput):
+@validate_response(ReturnUser)
+async def user_login(data: UserInput) -> ReturnUser:
     """Login existing user account"""
     fetch_user = await g.connection.fetch_one(
         "SELECT * FROM users WHERE email = :email", {"email": data.email.lower()}
@@ -111,10 +125,15 @@ async def user_login(data: UserInput):
         if bcrypt.checkpw(
             data.password.encode("utf-8"), fetch_user["password_hash"].encode("utf-8")
         ):
-            login_user(AuthUser(fetch_user["user_id"], fetch_user["email"]))
+            login_user(AuthUser(fetch_user["user_id"]))
             token = auth_manager.dump_token(current_user.auth_id)
-            print(token)
-            return {"token": token}, 200
+            return {
+                "token": token,
+                "user_id": current_user.auth_id,
+                "name": fetch_user["name"],
+                "email": fetch_user["email"],
+                "created": fetch_user["created"],
+            }, 200
         else:
             return {"message": "Incorrect email or password."}, 400
     else:
@@ -160,7 +179,7 @@ class Diaries:
 
 @app.get("/users")
 @tag(["User"])
-@login_required
+# @login_required
 @validate_response(Users)
 async def get_users() -> Users:
     """Get all users"""
