@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 
 const loginSchema = z.object({
   email: z.string().email({
@@ -12,6 +13,8 @@ const loginSchema = z.object({
 type UserDataType = z.infer<typeof loginSchema>;
 
 export default function LogIn() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -25,17 +28,22 @@ export default function LogIn() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit: SubmitHandler<UserDataType> = async (data) => {
+  const onSubmit: SubmitHandler<UserDataType> = async (loginData) => {
     try {
-      throw new Error("tf is happening");
-    } catch (error) {
-      setError("root", {
-        message: "tf is happening",
+      const response = await fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
       });
+      const data = await response.json();
+      navigate("/home");
+      console.log(data);
+    } catch (error) {
       console.log(error);
     }
   };
-
 
   return (
     <section
