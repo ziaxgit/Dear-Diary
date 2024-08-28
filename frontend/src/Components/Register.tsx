@@ -55,7 +55,7 @@ export default function Register() {
   return (
     <section
       id="login"
-      className="bg-blue-100 flex flex-col items-center min-h-dvh"
+      className="bg-sky-image bg-cover flex flex-col items-center min-h-dvh"
     >
       <Toaster
         containerStyle={{
@@ -70,7 +70,7 @@ export default function Register() {
       <p className="mt-4 text-md text-gray-800 ">
         Your safe space to journal and self reflect
       </p>
-      <div className="flex flex-col justify-center items-center bg-white rounded-2xl shadow-xl h-[500px] w-[350px] mt-32 ">
+      <div className="flex flex-col justify-center items-center rounded-2xl bg-white bg-opacity-80 shadow-slate-950 drop-shadow-2xl p-12 h-[500px] w-[300px] md:w-[350px] mt-2 md:mt-20 ">
         <h1 className="text-2xl mb-8 font-semibold">Register</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-1">
@@ -121,7 +121,7 @@ export default function Register() {
           </button>
           <p className="mt-4 text-center">
             Already have an account?{" "}
-            <a className="text-blue-500" href="/login">
+            <a className="text-blue-500 font-semibold" href="/login">
               Log In
             </a>
           </p>

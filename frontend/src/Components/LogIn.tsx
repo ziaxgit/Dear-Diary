@@ -53,7 +53,7 @@ export default function LogIn() {
   return (
     <section
       id="login"
-      className="bg-blue-100 flex flex-col items-center min-h-dvh"
+      className="bg-sky-image bg-cover flex flex-col items-center min-h-dvh"
     >
       <Toaster
         containerStyle={{
@@ -68,7 +68,7 @@ export default function LogIn() {
       <p className="mt-4 text-md text-gray-800 ">
         Your safe space to journal and self reflect
       </p>
-      <div className="flex flex-col justify-center items-center bg-white rounded-2xl shadow-xl p-12 h-[400px] w-[350px] mt-32 ">
+      <div className="flex flex-col justify-center items-center rounded-2xl bg-white bg-opacity-80 shadow-slate-950 drop-shadow-2xl p-12 h-[400px] w-[300px] md:w-[350px] mt-10 md:mt-20 ">
         <h1 className="text-2xl mb-6 font-semibold">Log In</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-1">
@@ -106,7 +106,7 @@ export default function LogIn() {
           </button>
           <p className="mt-4 text-center">
             Don't have an account?{" "}
-            <a className="text-blue-500" href="/register">
+            <a className="text-blue-500 font-semibold" href="/register">
               Register
             </a>
           </p>
