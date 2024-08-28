@@ -2,6 +2,7 @@ import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 const loginSchema = z.object({
   email: z.string().email({
@@ -18,13 +19,9 @@ export default function LogIn() {
   const {
     register,
     handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
+    resetField,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<UserDataType>({
-    defaultValues: {
-      email: "test@email.com",
-      password: "test",
-    },
     resolver: zodResolver(loginSchema),
   });
 
@@ -38,10 +35,18 @@ export default function LogIn() {
         body: JSON.stringify(loginData),
       });
       const data = await response.json();
-      navigate("/home");
-      console.log(data);
+      if (!response.ok) {
+        resetField("email");
+        resetField("password");
+        throw new Error(data.message);
+      }
+      toast.success("Login successful");
+      setTimeout(() => {
+        navigate("/home");
+      }, 1000);
     } catch (error) {
-      console.log(error);
+      const message = (error as Error).message;
+      toast.error(message);
     }
   };
 
@@ -53,10 +58,11 @@ export default function LogIn() {
       <h1 className="text-5xl font-semibold text-gray-700 mt-12">
         Dear Diary...
       </h1>
+
       <p className="mt-4 text-md text-gray-800 ">
         Your safe space to journal and self reflect
       </p>
-      <div className="flex flex-col justify-center items-center bg-white rounded-2xl shadow-xl p-12 h-[400px] mt-32">
+      <div className="flex flex-col justify-center items-center bg-white rounded-2xl shadow-xl p-12 h-[400px] w-[350px] mt-32 ">
         <h1 className="text-2xl mb-6 font-semibold">Log In</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-1">
@@ -92,6 +98,7 @@ export default function LogIn() {
           >
             {isSubmitting ? "Loggin in..." : "Submit"}
           </button>
+          <Toaster />
         </form>
       </div>
     </section>
