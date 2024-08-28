@@ -74,7 +74,7 @@ async def create_user(data: UserInput) -> User:
         "SELECT email FROM users WHERE email = :email", {"email": data.email}
     )
     if check_email_exists:
-        return {"message": "User account already exists. Please log in."}, 400
+        return {"message": "Account already exists. Please log in."}, 400
     else:
         hashed_password = bcrypt.hashpw(
             data.password.encode("utf-8"), bcrypt.gensalt()
@@ -84,7 +84,11 @@ async def create_user(data: UserInput) -> User:
             """INSERT INTO users (name, email, password_hash)
         VALUES (:name, :email, :password_hash)
         RETURNING user_id, name, email, created""",
-            {"name": data.name, "email": data.email, "password_hash": hashed_password},
+            {
+                "name": data.name,
+                "email": data.email.lower(),
+                "password_hash": hashed_password,
+            },
         )
         return User(**result)
 
@@ -101,7 +105,7 @@ class LoginInput:
 async def user_login(data: UserInput):
     """Login existing user account"""
     fetch_user = await g.connection.fetch_one(
-        "SELECT * FROM users WHERE email = :email", {"email": data.email}
+        "SELECT * FROM users WHERE email = :email", {"email": data.email.lower()}
     )
     if fetch_user:
         if bcrypt.checkpw(
@@ -112,9 +116,9 @@ async def user_login(data: UserInput):
             print(token)
             return {"token": token}, 200
         else:
-            return {"message": "Incorrect email or password. Please try again."}, 400
+            return {"message": "Incorrect email or password."}, 400
     else:
-        return {"message": "User account does not exist. Please register."}, 404
+        return {"message": "No account found. Please register."}, 404
 
 
 @app.post("/logout")
