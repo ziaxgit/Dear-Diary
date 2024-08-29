@@ -3,6 +3,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
+import { useContext } from "react";
+import { UserContext } from "../App";
 
 const loginSchema = z.object({
   email: z.string().email({
@@ -15,6 +17,7 @@ type UserDataType = z.infer<typeof loginSchema>;
 
 export default function LogIn() {
   const navigate = useNavigate();
+  const { setCurrentUser } = useContext(UserContext);
 
   const {
     register,
@@ -35,6 +38,7 @@ export default function LogIn() {
         body: JSON.stringify(loginData),
       });
       const data = await response.json();
+      setCurrentUser(data);
       if (!response.ok) {
         resetField("email");
         resetField("password");
