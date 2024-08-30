@@ -5,7 +5,7 @@ import Register from "./Components/Register";
 import { useState, createContext } from "react";
 
 interface User {
-  id: number;
+  user_id: number;
   name: string;
   email: string;
   token: string;

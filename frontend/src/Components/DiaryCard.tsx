@@ -19,7 +19,7 @@ export default function DiaryCard({ diary }: { diary: DiaryCardProps }) {
     <div key={diary.diary_id} className="bg-white bg-opacity-80 col-span-9 p-4">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl">{diary.title}</h1>
-        <p className="text-md">{convertDate(diary.created)}</p>
+        <p className="text-sm text-gray-500">{convertDate(diary.created)}</p>
       </div>
       <div className="grid grid-cols-12">
         <div className="col-span-8 flex flex-col gap-4">

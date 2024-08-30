@@ -1,4 +1,4 @@
-export function convertDate(dateString) {
+export function convertDate(dateString: string) {
   const date = new Date(dateString);
 
   const day = date.getDate();
@@ -22,7 +22,6 @@ export function convertDate(dateString) {
 
   let hours = date.getHours();
   const minutes = date.getMinutes();
-  const seconds = date.getSeconds();
 
   const ampm = hours >= 12 ? "PM" : "AM";
 
@@ -30,9 +29,8 @@ export function convertDate(dateString) {
   hours = hours ? hours : 12; // the hour '0' should be '12'
 
   const minutesFormatted = minutes < 10 ? "0" + minutes : minutes;
-  const secondsFormatted = seconds < 10 ? "0" + seconds : seconds;
 
-  const formattedDate = `${hours}:${minutesFormatted} ${ampm.toLowerCase()}, ${day} ${monthName} ${year}`;
+  const formattedDate = `${hours}:${minutesFormatted} ${ampm.toLowerCase()} ${day} ${monthName} ${year}`;
 
   return formattedDate;
 }

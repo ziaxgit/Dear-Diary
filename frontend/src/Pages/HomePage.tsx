@@ -10,29 +10,19 @@ import { useContext } from "react";
 import { UserContext } from "../App";
 import { CgProfile } from "react-icons/cg";
 import DiaryCard, { DiaryCardProps } from "../Components/DiaryCard";
-import { convertDate } from "../utils/dateTimeConverter.js";
+import { convertDate } from "../utils/dateTimeConverter.ts";
+
+import { fetchDiaries } from "../utils/apiCalls.js";
 
 export default function HomePage() {
   const { currentUser } = useContext(UserContext);
+
   const [selectedDiary, setSelectedDiary] =
     React.useState<DiaryCardProps | null>(null);
 
-  const queryClient = useQueryClient();
-
-  const fetchDiaries = async () => {
-    const response = await fetch(`http://localhost:5000/users/1/diaries`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${currentUser?.token}`,
-      },
-    });
-    const data = await response.json();
-    return data;
-  };
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["diaries"],
-    queryFn: fetchDiaries,
+    queryFn: () => fetchDiaries(currentUser),
   });
 
   useEffect(() => {
@@ -51,27 +41,37 @@ export default function HomePage() {
 
   console.log({ selectedDiary });
 
+  const handleDiaryClick = (diary: DiaryCardProps) => {
+    setSelectedDiary(diary);
+    return true;
+  };
+
   return (
     <section id="login" className="bg-sky-image bg-cover min-h-dvh px-[10vw]">
       <div className="pt-10 flex justify-between items-center">
-        <h1 className="text-5xl font-semibold text-gray-700"> Dear Diary...</h1>
+        <h1 className="text-5xl font-semibold text-black"> Dear Diary...</h1>
         <CgProfile size={40} />
       </div>
       <p className="mt-8 text-center text-xl mb-10 ">
-        Welcome to your diaries {currentUser?.name}!{" "}
+        Hi {currentUser?.name}! Welcome to your diaries{" "}
+        <span className="text-xl">📖</span>
       </p>
 
-      <div className="grid grid-cols-12 bg-white border-[2px] border-gray-50">
+      <div className="grid grid-cols-12 bg-white border-[2px] border-gray-50 grid-rows-2">
         <div className="col-span-3 divide-y-[1px] border-r-[1px] border-gray-200">
           {data &&
             data.diaries.map((diary: DiaryCardProps) => {
               return (
                 <div
-                  className="bg-white p-4 cursor-pointer hover:bg-sky-100 active:bg-sky-200 "
-                  onClick={() => setSelectedDiary(diary)}
+                  className={`p-4 cursor-pointer hover:bg-sky-100 ${
+                    diary.diary_id === selectedDiary?.diary_id && "bg-sky-200"
+                  }`}
+                  onClick={() => handleDiaryClick(diary)}
                 >
-                  <p>{diary?.title}</p>
-                  <p>{convertDate(diary?.created)}</p>
+                  <p className="text-lg">{diary?.title}</p>
+                  <p className="text-gray-500 text-xs">
+                    {convertDate(diary?.created)}
+                  </p>
                 </div>
               );
             })}
