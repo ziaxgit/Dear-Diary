@@ -35,6 +35,12 @@ export default function HomePage() {
     queryFn: fetchDiaries,
   });
 
+  useEffect(() => {
+    if (data && data.diaries.length > 0) {
+      setSelectedDiary(data.diaries[0]);
+    }
+  }, [data]);
+
   if (isPending) {
     return <p>Loading...</p>;
   }
@@ -42,6 +48,8 @@ export default function HomePage() {
   if (isError) {
     return <p>Error: {error.message}</p>;
   }
+
+  console.log({ selectedDiary });
 
   return (
     <section id="login" className="bg-sky-image bg-cover min-h-dvh px-[10vw]">
@@ -53,7 +61,7 @@ export default function HomePage() {
         Welcome to your diaries {currentUser?.name}!{" "}
       </p>
 
-      <div className="grid grid-cols-12 bg-white min-h-[70vh] border-[2px] border-gray-50">
+      <div className="grid grid-cols-12 bg-white border-[2px] border-gray-50">
         <div className="col-span-3 divide-y-[1px] border-r-[1px] border-gray-200">
           {data &&
             data.diaries.map((diary: DiaryCardProps) => {
