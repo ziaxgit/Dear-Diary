@@ -53,13 +53,13 @@ export default function HomePage() {
         Welcome to your diaries {currentUser?.name}!{" "}
       </p>
 
-      <div className="grid grid-cols-12 bg-white min-h-screen">
-        <div className="col-span-3 divide-y">
+      <div className="grid grid-cols-12 bg-white min-h-[70vh] border-[2px] border-gray-50">
+        <div className="col-span-3 divide-y-[1px] border-r-[1px] border-gray-200">
           {data &&
             data.diaries.map((diary: DiaryCardProps) => {
               return (
                 <div
-                  className="bg-white p-4 cursor-pointer"
+                  className="bg-white p-4 cursor-pointer hover:bg-sky-100"
                   onClick={() => setSelectedDiary(diary)}
                 >
                   <p>{diary?.title}</p>
