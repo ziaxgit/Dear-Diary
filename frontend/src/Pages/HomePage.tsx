@@ -10,7 +10,7 @@ import { useContext } from "react";
 import { UserContext } from "../App";
 import { CgProfile } from "react-icons/cg";
 import DiaryCard, { DiaryCardProps } from "../Components/DiaryCard";
-import Sidebar from "../Components/Sidebar";
+import { convertDate } from "../utils/dateTimeConverter.js";
 
 export default function HomePage() {
   const { currentUser } = useContext(UserContext);
@@ -71,7 +71,7 @@ export default function HomePage() {
                   onClick={() => setSelectedDiary(diary)}
                 >
                   <p>{diary?.title}</p>
-                  <p>{diary?.created}</p>
+                  <p>{convertDate(diary?.created)}</p>
                 </div>
               );
             })}
