@@ -67,7 +67,7 @@ export default function HomePage() {
             data.diaries.map((diary: DiaryCardProps) => {
               return (
                 <div
-                  className="bg-white p-4 cursor-pointer hover:bg-sky-100"
+                  className="bg-white p-4 cursor-pointer hover:bg-sky-100 active:bg-sky-200 "
                   onClick={() => setSelectedDiary(diary)}
                 >
                   <p>{diary?.title}</p>
