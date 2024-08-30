@@ -1,0 +1,2 @@
+- wanted to set the first diary on homepage to be the first in the list 
+    - had issues with react query and useEffect. As onSuccess has been deprecated, 

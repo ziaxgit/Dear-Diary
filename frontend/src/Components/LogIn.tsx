@@ -111,7 +111,10 @@ export default function LogIn() {
           </button>
           <p className="mt-4 text-center">
             Don't have an account?{" "}
-            <a className="text-blue-500 font-semibold" href="/register">
+            <a
+              className="text-blue-500 font-semibold"
+              onClick={() => navigate("/home")}
+            >
               Register
             </a>
           </p>

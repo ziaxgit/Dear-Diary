@@ -18,7 +18,7 @@ export default function DiaryCard({ diary }: { diary: DiaryCardProps }) {
   return (
     <div
       key={diary.diary_id}
-      className="bg-white p-4 bg-opacity-50 rounded-lg shadow-md mb-2 w=[500px]"
+      className="bg-white p-4 bg-opacity-50 rounded-lg shadow-md mb-2 col-span-8"
     >
       <div className="flex justify-between items-center mb-1">
         <h1 className="text-lg">{diary.title}</h1>

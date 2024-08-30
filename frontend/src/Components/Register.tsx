@@ -127,7 +127,11 @@ export default function Register() {
           </button>
           <p className="mt-4 text-center">
             Already have an account?{" "}
-            <a className="text-blue-500 font-semibold" href="/login">
+            <a
+              className="text-blue-500 font-semibold"
+              // href="/login"
+              onClick={() => navigate("/home")}
+            >
               Log In
             </a>
           </p>

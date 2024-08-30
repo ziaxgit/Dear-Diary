@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   useQuery,
   useMutation,
@@ -10,9 +10,12 @@ import { useContext } from "react";
 import { UserContext } from "../App";
 import { CgProfile } from "react-icons/cg";
 import DiaryCard, { DiaryCardProps } from "../Components/DiaryCard";
+import Sidebar from "../Components/Sidebar";
 
 export default function HomePage() {
   const { currentUser } = useContext(UserContext);
+  const [selectedDiary, setSelectedDiary] =
+    React.useState<DiaryCardProps | null>(null);
 
   const queryClient = useQueryClient();
 
@@ -27,13 +30,18 @@ export default function HomePage() {
     const data = await response.json();
     return data;
   };
-
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["diaries"],
     queryFn: fetchDiaries,
   });
 
-  console.log(data);
+  if (isPending) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError) {
+    return <p>Error: {error.message}</p>;
+  }
 
   return (
     <section id="login" className="bg-sky-image bg-cover min-h-dvh px-[10vw]">
@@ -41,15 +49,29 @@ export default function HomePage() {
         <h1 className="text-5xl font-semibold text-gray-700"> Dear Diary...</h1>
         <CgProfile size={40} />
       </div>
-      <p className="mt-8 text-center text-xl mb-10">
+      <p className="mt-8 text-center text-xl mb-10 ">
         Welcome to your diaries {currentUser?.name}!{" "}
       </p>
-      {isPending && <p>Loading...</p>}
-      {isError && <p>Error: {error.message}</p>}
-      {data &&
-        data.diaries.map((diary: DiaryCardProps) => {
-          return <DiaryCard key={diary.diary_id} diary={diary} />;
-        })}
+
+      <div className="grid grid-cols-12">
+        <div className="col-span-4">
+          {data &&
+            data.diaries.map((diary: DiaryCardProps) => {
+              return (
+                <div
+                  className="mb- bg-red-400 p-4 cursor-pointer"
+                  onClick={() => setSelectedDiary(diary)}
+                >
+                  <p>{diary?.title}</p>
+                  <p>{diary?.created}</p>
+                </div>
+              );
+            })}
+        </div>
+        {selectedDiary && (
+          <DiaryCard key={selectedDiary?.diary_id} diary={selectedDiary} />
+        )}
+      </div>
     </section>
   );
 }
