@@ -13,6 +13,8 @@ import DiaryCard, { DiaryCardProps } from "../Components/DiaryCard";
 import { convertDate } from "../utils/dateTimeConverter.ts";
 
 import { fetchDiaries } from "../utils/apiCalls.js";
+import Title from "../Components/Title.tsx";
+import Subtitle from "../Components/Subtitle.tsx";
 
 export default function HomePage() {
   const { currentUser } = useContext(UserContext);
@@ -51,15 +53,15 @@ export default function HomePage() {
       id="login"
       className="bg-sky-image bg-cover min-h-screen px-[10vw]"
     >
-      <div className="pt-10 flex items-center justify-between relative">
-        <h1 className="text-5xl font-semibold text-black absolute left-1/2 transform -translate-x-1/2">
-          Dear Diary...
-        </h1>
-        <div className="ml-auto">
-          <CgProfile size={40} />
+      <div className="flex items-center">
+        <div className="text-center flex-grow">
+          <Title />
+          <Subtitle />
+        </div>
+        <div className="">
+          <CgProfile size={50} />
         </div>
       </div>
-    
       <p className="mt-8 text-center text-xl">
         Hi {currentUser?.name}! Welcome to your diaries{" "}
         <span className="text-xl">📖</span>

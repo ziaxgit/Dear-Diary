@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { useContext } from "react";
 import { UserContext } from "../App";
+import Title from "./Title";
+import Subtitle from "./Subtitle";
 
 const loginSchema = z.object({
   email: z.string().email({
@@ -65,14 +67,8 @@ export default function LogIn() {
         }}
       />
 
-      <h1 className="text-5xl font-semibold text-gray-700 mt-10">
-        {" "}
-        Dear Diary...
-      </h1>
-
-      <p className="mt-4 text-md text-gray-800 ">
-        Your safe space to journal and self reflect
-      </p>
+      <Title />
+      <Subtitle />
       <div className="flex flex-col justify-center items-center rounded-2xl bg-white bg-opacity-80 shadow-slate-950 drop-shadow-2xl p-12 h-[400px] w-[300px] md:w-[350px] mt-10 md:mt-20 ">
         <h1 className="text-2xl mb-6 font-semibold">Log In</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
