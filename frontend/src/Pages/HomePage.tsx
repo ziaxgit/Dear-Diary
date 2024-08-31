@@ -11,6 +11,8 @@ import { UserContext } from "../App";
 import { CgProfile } from "react-icons/cg";
 import DiaryCard, { DiaryCardProps } from "../Components/DiaryCard";
 import { convertDate } from "../utils/dateTimeConverter.ts";
+import { FaUserCircle } from "react-icons/fa";
+import { IoAdd } from "react-icons/io5";
 
 import { fetchDiaries } from "../utils/apiCalls.js";
 import Title from "../Components/Title.tsx";
@@ -58,7 +60,7 @@ export default function HomePage() {
           <Title />
           <Subtitle />
           <div className="absolute top-8 bottom-0 right-2">
-            <CgProfile size={50} />
+            <FaUserCircle size={50} />
           </div>
         </div>
       </div>
@@ -66,8 +68,9 @@ export default function HomePage() {
         Hi {currentUser?.name}! Welcome to your diaries{" "}
         <span className="text-xl">📖</span>
       </p>
-      <button className="bg-sky-400 text-black p-2 mb-1 hover:bg-sky-600">
-        New diary 📝
+      <button className="flex flex-row items-center bg-sky-500 px-2 py-1 mb-2 hover:bg-sky-700">
+        <IoAdd size={23} color="white" />
+        <p className=" text-white  text-lg">New diary</p>
       </button>
       <div className=" grid grid-cols-12 bg-white border-[2px] border-gray-50 ">
         <div className="col-span-3 divide-y-[1px] border-r-[1px] border-gray-200">

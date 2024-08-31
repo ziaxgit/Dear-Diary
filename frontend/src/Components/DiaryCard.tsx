@@ -13,6 +13,8 @@ export interface DiaryCardProps {
   diary_id: number;
 }
 
+import { BiEdit } from "react-icons/bi";
+
 export default function DiaryCard({ diary }: { diary: DiaryCardProps }) {
   console.log(diary);
   return (
@@ -40,9 +42,10 @@ export default function DiaryCard({ diary }: { diary: DiaryCardProps }) {
           />
         </div>
       </div>
-      <div className="flex justify-center">
-        <button className="bg-gray-900 text-gray-300 px-4 py-1 rounded-md mt-4 ">
-          Edit
+      <div className="flex justify-end mt-4 ">
+        <button className=" bg-gray-900 px-2 p-1 rounded-md flex gap-1 items-center hover:bg-sky-500">
+          <BiEdit color="white" size={16} />
+          <p className=" text-white -300 mt-[1px]">Edit</p>
         </button>
       </div>
     </div>

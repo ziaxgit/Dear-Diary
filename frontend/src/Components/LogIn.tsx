@@ -63,7 +63,7 @@ export default function LogIn() {
     >
       <Toaster
         containerStyle={{
-          top: "11rem",
+          top: "10rem",
         }}
       />
 
