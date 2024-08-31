@@ -4,6 +4,7 @@ import LogIn from "./Components/LogIn";
 import Register from "./Components/Register";
 import { useState, createContext } from "react";
 import { Toaster } from "react-hot-toast";
+import PostForm from "./Components/PostForm";
 
 interface User {
   user_id: number;
@@ -40,6 +41,8 @@ export default function App() {
             <Route path="/login" element={<LogIn />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/diary" element={<PostForm />} />
+            <Route path="/*" element={<div>Uh oh.. you are lost</div>} />
           </Routes>
         </UserContext.Provider>
       </main>
