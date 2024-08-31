@@ -47,17 +47,27 @@ export default function HomePage() {
   };
 
   return (
-    <section id="login" className="bg-sky-image bg-cover min-h-dvh px-[10vw]">
-      <div className="pt-10 flex justify-between items-center">
-        <h1 className="text-5xl font-semibold text-black"> Dear Diary...</h1>
-        <CgProfile size={40} />
+    <section
+      id="login"
+      className="bg-sky-image bg-cover min-h-screen px-[10vw]"
+    >
+      <div className="pt-10 flex items-center justify-between relative">
+        <h1 className="text-5xl font-semibold text-black absolute left-1/2 transform -translate-x-1/2">
+          Dear Diary...
+        </h1>
+        <div className="ml-auto">
+          <CgProfile size={40} />
+        </div>
       </div>
-      <p className="mt-8 text-center text-xl mb-10 ">
+    
+      <p className="mt-8 text-center text-xl">
         Hi {currentUser?.name}! Welcome to your diaries{" "}
         <span className="text-xl">📖</span>
       </p>
-
-      <div className="grid grid-cols-12 bg-white border-[2px] border-gray-50 grid-rows-2">
+      <button className="bg-sky-400 text-black p-2 mb-1 hover:bg-sky-600">
+        New diary 📝
+      </button>
+      <div className=" grid grid-cols-12 bg-white border-[2px] border-gray-50 ">
         <div className="col-span-3 divide-y-[1px] border-r-[1px] border-gray-200">
           {data &&
             data.diaries.map((diary: DiaryCardProps) => {

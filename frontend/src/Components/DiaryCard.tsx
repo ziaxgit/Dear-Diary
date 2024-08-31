@@ -40,6 +40,11 @@ export default function DiaryCard({ diary }: { diary: DiaryCardProps }) {
           />
         </div>
       </div>
+      <div className="flex justify-center">
+        <button className="bg-gray-900 text-gray-300 px-4 py-1 rounded-md mt-4 ">
+          Edit
+        </button>
+      </div>
     </div>
   );
 }
