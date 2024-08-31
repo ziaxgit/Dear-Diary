@@ -179,7 +179,7 @@ class Diaries:
 
 @app.get("/users")
 @tag(["User"])
-# @login_required
+@login_required
 @validate_response(Users)
 async def get_users() -> Users:
     """Get all users"""
@@ -191,14 +191,14 @@ async def get_users() -> Users:
 
 @app.get("/users/<int:user_id>/diaries")
 @tag(["User"])
-@login_required
-@login_required
+# @login_required
 @validate_response(Diaries)
 async def get_user_diaries(user_id: id) -> Diaries:
     """Get all diaries for a specific user"""
     query = """
         SELECT * FROM diaries
         WHERE user_id = :user_id
+        ORDER BY created DESC
         """
     values = {"user_id": user_id}
     diaries = [Diary(**row) async for row in g.connection.iterate(query, values)]
@@ -217,7 +217,7 @@ async def get_diaries() -> Diaries:
 
 @app.post("/diaries")
 @tag(["Diary"])
-@login_required
+# @login_required
 @validate_request(DiaryInput)
 @validate_response(Diary)
 async def create_diary(data: DiaryInput) -> Diary:

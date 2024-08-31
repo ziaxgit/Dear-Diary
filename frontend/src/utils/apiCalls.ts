@@ -3,7 +3,7 @@ interface CurrentUserProps {
   token: string;
 }
 
-export const fetchDiaries = async (currentUser: CurrentUserProps | null) => {
+export const fetchDiariesFn = async (currentUser: CurrentUserProps | null) => {
   const response = await fetch(`http://localhost:5000/users/1/diaries`, {
     method: "GET",
     headers: {
@@ -15,7 +15,7 @@ export const fetchDiaries = async (currentUser: CurrentUserProps | null) => {
   return data;
 };
 
-export const logoutUser = async (currentUser: CurrentUserProps | null) => {
+export const logOutUserFn = async (currentUser: CurrentUserProps | null) => {
   const response = await fetch(`http://localhost:5000/logout`, {
     method: "POST",
     headers: {

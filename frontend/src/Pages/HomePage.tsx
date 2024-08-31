@@ -12,21 +12,36 @@ import DiaryCard, { DiaryCardProps } from "../Components/DiaryCard";
 import { convertDate } from "../utils/dateTimeConverter.ts";
 import { FaUserCircle } from "react-icons/fa";
 import { IoAdd } from "react-icons/io5";
-
-import { fetchDiaries } from "../utils/apiCalls.js";
+import toast, { Toaster } from "react-hot-toast";
+import { fetchDiariesFn, logOutUserFn } from "../utils/apiCalls.js";
 import Title from "../Components/Title.tsx";
 import Subtitle from "../Components/Subtitle.tsx";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
   const { currentUser } = useContext(UserContext);
-
+  const navigate = useNavigate();
   const [selectedDiary, setSelectedDiary] =
     React.useState<DiaryCardProps | null>(null);
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["diaries"],
-    queryFn: () => fetchDiaries(currentUser),
+    queryFn: () => fetchDiariesFn(currentUser),
   });
+
+  const logOutUserMutation = useMutation({
+    mutationFn: () => logOutUserFn(currentUser),
+    onSuccess: () => {
+      toast.success("Logout successful");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    },
+  });
+
+  const handleLogOut = () => {
+    logOutUserMutation.mutate();
+  };
 
   useEffect(() => {
     if (data && data.diaries.length > 0) {
@@ -54,6 +69,13 @@ export default function HomePage() {
       id="login"
       className="bg-sky-image bg-cover min-h-screen px-[10vw]"
     >
+      <Toaster
+        containerStyle={
+          {
+            // top: "10rem",
+          }
+        }
+      />
       <div className="relative pt-5 dropdown">
         <div className="text-center -mt-5">
           <Title />
@@ -66,13 +88,16 @@ export default function HomePage() {
               />
             </div>
             <div className="absolute right-0 -mt-2 mr-2 bg-gray-50 p-2 hidden group-hover:block transition-opacity duration-200 rounded-md gap-1 shadow-md">
-              <p className="border-b-[1px] border-b-gray-300 mb-">
+              <p className="border-b-[1px] border-b-gray-300 mb-1">
                 Logged in as
               </p>
-              <p className="border-b-[1px] border-b-gray-100 text-sm font-light mb-1">
+              <p className="border-b-[1px] border-b-gray-100 text-sm font-light mb-2">
                 {currentUser?.email}
               </p>
-              <button className="bg-gray-300 w-full text-black rounded-md">
+              <button
+                className="bg-gray-300 w-full text-black rounded-md"
+                onClick={handleLogOut}
+              >
                 Log out
               </button>
             </div>
