@@ -31,16 +31,14 @@ export default function HomePage() {
 
   const logOutUserMutation = useMutation({
     mutationFn: () => logOutUserFn(currentUser),
-    onSuccess: () => {
-      toast.success("Logout successful");
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000);
-    },
   });
 
   const handleLogOut = () => {
     logOutUserMutation.mutate();
+    toast.success("Logout successful");
+    setTimeout(() => {
+      navigate("/login");
+    }, 2500);
   };
 
   useEffect(() => {
@@ -69,13 +67,11 @@ export default function HomePage() {
       id="login"
       className="bg-sky-image bg-cover min-h-screen px-[10vw]"
     >
-      <Toaster
-        containerStyle={
-          {
-            // top: "10rem",
-          }
-        }
-      />
+      {/* <Toaster
+        containerStyle={{
+          top: "10rem",
+        }}
+      /> */}
       <div className="relative pt-5 dropdown">
         <div className="text-center -mt-5">
           <Title />

@@ -49,7 +49,7 @@ export default function LogIn() {
       toast.success("Login successful");
       setTimeout(() => {
         navigate("/home");
-      }, 1000);
+      }, 2500);
     } catch (error) {
       const message = (error as Error).message;
       toast.error(message);
@@ -61,12 +61,6 @@ export default function LogIn() {
       id="login"
       className="bg-sky-image bg-cover flex flex-col items-center min-h-dvh"
     >
-      <Toaster
-        containerStyle={{
-          top: "10rem",
-        }}
-      />
-
       <Title />
       <Subtitle />
       <div className="flex flex-col justify-center items-center rounded-2xl bg-white bg-opacity-80 shadow-slate-950 drop-shadow-2xl p-12 h-[400px] w-[300px] md:w-[350px] mt-10 md:mt-20 ">

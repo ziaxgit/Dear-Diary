@@ -3,6 +3,7 @@ import HomePage from "./Pages/HomePage";
 import LogIn from "./Components/LogIn";
 import Register from "./Components/Register";
 import { useState, createContext } from "react";
+import { Toaster } from "react-hot-toast";
 
 interface User {
   user_id: number;
@@ -29,6 +30,11 @@ export default function App() {
     <BrowserRouter>
       <main>
         <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+          <Toaster
+            containerStyle={{
+              top: "10rem",
+            }}
+          />
           <Routes>
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<LogIn />} />
