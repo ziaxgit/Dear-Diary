@@ -123,13 +123,13 @@ export default function Register() {
           </button>
           <p className="mt-4 text-center">
             Already have an account?{" "}
-            <a
+            <button
               className="text-blue-500 font-semibold"
               // href="/login"
-              onClick={() => navigate("/home")}
+              onClick={() => navigate("/login")}
             >
               Log In
-            </a>
+            </button>
           </p>
         </form>
       </div>

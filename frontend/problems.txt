@@ -1,2 +1,11 @@
 - wanted to set the first diary on homepage to be the first in the list 
-    - had issues with react query and useEffect. As onSuccess has been deprecated, 
+    - wanted to use onSuccess but it was deprecated, 
+    - solved by using useEffect with data as dependency
+
+- made Title and Subtitle components to be reusable
+
+- TO DO list
+ - create a post diary component
+ - add post diary api call
+ - route Edit click to post component with information of the diary
+ 

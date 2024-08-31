@@ -107,12 +107,12 @@ export default function LogIn() {
           </button>
           <p className="mt-4 text-center">
             Don't have an account?{" "}
-            <a
+            <button
               className="text-blue-500 font-semibold"
-              onClick={() => navigate("/home")}
+              onClick={() => navigate("/register")}
             >
               Register
-            </a>
+            </button>
           </p>
         </form>
       </div>

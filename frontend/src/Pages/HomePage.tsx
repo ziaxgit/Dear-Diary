@@ -53,13 +53,13 @@ export default function HomePage() {
       id="login"
       className="bg-sky-image bg-cover min-h-screen px-[10vw]"
     >
-      <div className="flex items-center">
-        <div className="text-center flex-grow">
+      <div className="relative pt-5">
+        <div className="text-center -mt-5">
           <Title />
           <Subtitle />
-        </div>
-        <div className="">
-          <CgProfile size={50} />
+          <div className="absolute top-8 bottom-0 right-2">
+            <CgProfile size={50} />
+          </div>
         </div>
       </div>
       <p className="mt-8 text-center text-xl">
