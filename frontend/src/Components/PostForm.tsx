@@ -12,9 +12,7 @@ import { createDiaryFn } from "../utils/apiCalls.js";
 
 const postFormSchema = z.object({
   title: z.string().min(2, { message: "Please enter a title" }),
-  description: z
-    .string()
-    .min(2, { message: "Please enter a valid description" }),
+  description: z.string().min(2, { message: "Please enter more details" }),
   grateful_for: z.string().optional(),
   did_not_go_well: z.string().optional(),
   image_url: z.string().optional(),
@@ -31,7 +29,6 @@ export default function PostForm() {
   const {
     register,
     handleSubmit,
-    resetField,
     formState: { errors, isSubmitting },
   } = useForm<PostDataType>({
     resolver: zodResolver(postFormSchema),
@@ -50,6 +47,7 @@ export default function PostForm() {
     },
     onError: (error) => {
       toast.error(error?.message);
+      navigate("/home");
     },
   });
 
@@ -81,6 +79,9 @@ export default function PostForm() {
             "
               placeholder="Title..."
             />
+            {errors.title && (
+              <p className="text-red-600">{errors.title.message}</p>
+            )}
           </div>
           <div className="flex flex-col gap-1 w-full lg:w-[500px]">
             <label className="font-">What am I grateful for?</label>
@@ -123,6 +124,9 @@ export default function PostForm() {
             "
               placeholder="Details..."
             />
+            {errors.description && (
+              <p className="text-red-600">{errors.description.message}</p>
+            )}
           </div>
           <div className="flex flex-col gap-1 w-full md:w-[500px]">
             <label className="font-">Image URL</label>
