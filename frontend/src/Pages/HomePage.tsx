@@ -62,6 +62,10 @@ export default function HomePage() {
     return true;
   };
 
+  const handleNewDiaryClick = () => {
+    navigate("/diary");
+  };
+
   return (
     <section
       id="login"
@@ -104,7 +108,10 @@ export default function HomePage() {
         Hi {currentUser?.name}! Welcome to your diaries{" "}
         <span className="text-xl">📖</span>
       </p>
-      <button className="flex flex-row items-center bg-sky-500 px-2 py-1 mb-2 hover:bg-sky-700">
+      <button
+        onClick={handleNewDiaryClick}
+        className="flex flex-row items-center bg-sky-500 px-2 py-1 mb-2 hover:bg-sky-700"
+      >
         <IoAdd size={23} color="white" />
         <p className=" text-white text-lg font-">New diary</p>
       </button>

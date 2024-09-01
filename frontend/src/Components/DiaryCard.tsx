@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { convertDate } from "../utils/dateTimeConverter.js";
 
 export interface DiaryCardProps {
@@ -16,7 +17,12 @@ export interface DiaryCardProps {
 import { BiEdit } from "react-icons/bi";
 
 export default function DiaryCard({ diary }: { diary: DiaryCardProps }) {
-  console.log(diary);
+  const navigate = useNavigate();
+  const handleEditDiaryClick = (diary: DiaryCardProps) => {
+    navigate("/diary", {
+      state: diary,
+    });
+  };
   return (
     <div key={diary.diary_id} className="bg-white bg-opacity-80 col-span-9 p-4">
       <div className="flex justify-between items-center mb-4">
@@ -43,7 +49,10 @@ export default function DiaryCard({ diary }: { diary: DiaryCardProps }) {
         </div>
       </div>
       <div className="flex justify-end mt-4 ">
-        <button className=" bg-gray-900 px-2 p-1 rounded-md flex gap-1 items-center hover:bg-sky-500">
+        <button
+          className=" bg-gray-900 px-2 p-1 rounded-md flex gap-1 items-center hover:bg-sky-500"
+          onClick={() => handleEditDiaryClick(diary)}
+        >
           <BiEdit color="white" size={16} />
           <p className=" text-white -300 mt-[1px]">Edit</p>
         </button>
