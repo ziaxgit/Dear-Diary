@@ -5,13 +5,16 @@ interface CurrentUserProps {
 import { DiaryCardProps } from "../Components/DiaryCard";
 
 export const fetchDiariesFn = async (currentUser: CurrentUserProps | null) => {
-  const response = await fetch(`http://localhost:5000/users/1/diaries`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${currentUser?.token}`,
-    },
-  });
+  const response = await fetch(
+    `http://localhost:5000/users/${currentUser?.user_id}/diaries`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${currentUser?.token}`,
+      },
+    }
+  );
   const data = await response.json();
   return data;
 };
@@ -52,16 +55,23 @@ export const editDiaryFn = async (
   currentUser: CurrentUserProps | null,
   diary: DiaryCardProps
 ) => {
-  const response = await fetch(`http://localhost:5000/diaries`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${currentUser?.token}`,
-    },
-    body: JSON.stringify(diary),
-  });
-  if (!response.ok) {
-    throw new Error("Diary creation failed");
+  try {
+    const response = await fetch(
+      `http://localhost:5000/diaries/${diary.diary_id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentUser?.token}`,
+        },
+        body: JSON.stringify(diary),
+      }
+    );
+    return response.json();
+  } catch (error) {
+    console.log(error);
   }
-  return response.json();
+  // if (!response.ok) {
+  //   throw new Error("Error updating diary");
+  // }
 };

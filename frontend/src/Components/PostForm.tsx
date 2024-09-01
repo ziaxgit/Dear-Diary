@@ -52,7 +52,7 @@ export default function PostForm() {
   });
 
   const editDiaryMutation = useMutation({
-    mutationFn: (diary: DiaryCardProps) => createDiaryFn(currentUser, diary),
+    mutationFn: (diary: DiaryCardProps) => editDiaryFn(currentUser, diary),
     onSuccess: () => {
       toast.success("Diary updated successfully");
       navigate("/home");
@@ -69,6 +69,7 @@ export default function PostForm() {
     const diaryWithUserId = { ...diary, user_id: currentUser?.user_id };
     console.log(diaryWithUserId);
     if (state) {
+      diaryWithUserId.diary_id = state.diary_id;
       editDiaryMutation.mutate(diaryWithUserId);
     } else {
       postDiaryMutation.mutate(diaryWithUserId);
