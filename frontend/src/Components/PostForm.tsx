@@ -6,6 +6,9 @@ import toast, { Toaster } from "react-hot-toast";
 import Title from "./Title";
 import Subtitle from "./Subtitle";
 import { DiaryCardProps } from "./DiaryCard";
+import ProfileDropdown from "./ProfileDropdown";
+import { UserContext } from "../App";
+import { useContext } from "react";
 
 const postFormSchema = z.object({
   title: z.string().min(2, { message: "Please enter a title" }),
@@ -25,6 +28,9 @@ const postFormSchema = z.object({
 type PostDataType = z.infer<typeof postFormSchema>;
 
 export default function PostForm({ diary }: { diary?: DiaryCardProps | null }) {
+  const { currentUser } = useContext(UserContext);
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -35,16 +41,17 @@ export default function PostForm({ diary }: { diary?: DiaryCardProps | null }) {
   });
 
   const { state }: { state: DiaryCardProps } = useLocation();
-  console.log(state);
+
+  const handleGoBackClick = () => {
+    navigate("/home");
+  };
+
   return (
     <section
       id="new-diary"
       className="bg-sky-image bg-cover min-h-dvh px-[10vw]"
     >
-      <div className="text-center pt-5 ">
-        <Title />
-        <Subtitle />
-      </div>
+      <ProfileDropdown currentUser={currentUser} />
       <p className="text-center mt-6 mb-2">Write your heart out</p>
       <div className="flex justify-center gap-12">
         <form className="flex flex-col gap-1">
@@ -110,6 +117,21 @@ export default function PostForm({ diary }: { diary?: DiaryCardProps | null }) {
             "
               placeholder="Image url..."
             />
+          </div>
+          <div className="flex items-center justify-end gap-2 mt-2">
+            <button
+              onClick={handleGoBackClick}
+              className="bg-gray-100 text-gray-800 py-1 px-2 rounded hover:bg-gray-300"
+            >
+              Go back
+            </button>
+            <button
+              disabled={isSubmitting}
+              className="bg-sky-500 py-1 rounded px-8 hover:bg-sky-600 text-gray-900"
+              type="submit"
+            >
+              {isSubmitting ? "Submitting..." : "Submit"}
+            </button>
           </div>
         </form>
       </div>
