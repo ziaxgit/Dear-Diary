@@ -6,7 +6,7 @@ import { useState, createContext } from "react";
 import { Toaster } from "react-hot-toast";
 import PostForm from "./Components/PostForm";
 
-interface User {
+export interface User {
   user_id: number;
   name: string;
   email: string;

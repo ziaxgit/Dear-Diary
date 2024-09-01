@@ -24,7 +24,7 @@ const postFormSchema = z.object({
 
 type PostDataType = z.infer<typeof postFormSchema>;
 
-export default function PostForm({ diary }: { diary: DiaryCardProps | null }) {
+export default function PostForm({ diary }: { diary?: DiaryCardProps | null }) {
   const {
     register,
     handleSubmit,
