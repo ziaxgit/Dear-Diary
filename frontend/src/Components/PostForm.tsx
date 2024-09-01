@@ -8,7 +8,7 @@ import ProfileDropdown from "./ProfileDropdown";
 import { UserContext } from "../App";
 import { useContext } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { createDiaryFn } from "../utils/apiCalls.js";
+import { createDiaryFn, editDiaryFn } from "../utils/apiCalls.js";
 
 const postFormSchema = z.object({
   title: z.string().min(2, { message: "Please enter a title" }),
@@ -51,12 +51,28 @@ export default function PostForm() {
     },
   });
 
+  const editDiaryMutation = useMutation({
+    mutationFn: (diary: DiaryCardProps) => createDiaryFn(currentUser, diary),
+    onSuccess: () => {
+      toast.success("Diary updated successfully");
+      navigate("/home");
+    },
+    onError: (error) => {
+      toast.error(error?.message);
+      navigate("/home");
+    },
+  });
+
   console.log(errors);
 
   const onSubmit: SubmitHandler<PostDataType> = async (diary) => {
     const diaryWithUserId = { ...diary, user_id: currentUser?.user_id };
     console.log(diaryWithUserId);
-    postDiaryMutation.mutate(diaryWithUserId);
+    if (state) {
+      editDiaryMutation.mutate(diaryWithUserId);
+    } else {
+      postDiaryMutation.mutate(diaryWithUserId);
+    }
     console.log("Submit clicked...");
   };
 
@@ -68,7 +84,10 @@ export default function PostForm() {
       <ProfileDropdown currentUser={currentUser} />
       <p className="text-center mt-6 mb-2">Write your heart out</p>
       <div className="flex justify-center gap-12">
-        <form className="flex flex-col gap-1" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="flex flex-col gap-1 mb-4"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <div className="flex flex-col w-full lg:w-[500px]">
             <label className="font-">Title for this day</label>
             <textarea
