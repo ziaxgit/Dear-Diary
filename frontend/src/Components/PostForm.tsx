@@ -2,13 +2,13 @@ import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocation, useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
-import Title from "./Title";
-import Subtitle from "./Subtitle";
+import toast from "react-hot-toast";
 import { DiaryCardProps } from "./DiaryCard";
 import ProfileDropdown from "./ProfileDropdown";
 import { UserContext } from "../App";
 import { useContext } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { createDiaryFn } from "../utils/apiCalls.js";
 
 const postFormSchema = z.object({
   title: z.string().min(2, { message: "Please enter a title" }),
@@ -16,18 +16,15 @@ const postFormSchema = z.object({
     .string()
     .min(2, { message: "Please enter a valid description" }),
   grateful_for: z.string().optional(),
-  created: z.string().optional(),
   did_not_go_well: z.string().optional(),
   image_url: z.string().optional(),
   made_me_smile: z.string().optional(),
-  learned: z.string().optional(),
-  user_id: z.number().optional(),
   diary_id: z.number().optional(),
 });
 
 type PostDataType = z.infer<typeof postFormSchema>;
 
-export default function PostForm({ diary }: { diary?: DiaryCardProps | null }) {
+export default function PostForm() {
   const { currentUser } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -45,6 +42,25 @@ export default function PostForm({ diary }: { diary?: DiaryCardProps | null }) {
   const handleGoBackClick = () => {
     navigate("/home");
   };
+  const postDiaryMutation = useMutation({
+    mutationFn: (diary: DiaryCardProps) => createDiaryFn(currentUser, diary),
+    onSuccess: () => {
+      toast.success("Diary created successfully");
+      navigate("/home");
+    },
+    onError: (error) => {
+      toast.error(error?.message);
+    },
+  });
+
+  console.log(errors);
+
+  const onSubmit: SubmitHandler<PostDataType> = async (diary) => {
+    const diaryWithUserId = { ...diary, user_id: currentUser?.user_id };
+    console.log(diaryWithUserId);
+    postDiaryMutation.mutate(diaryWithUserId);
+    console.log("Submit clicked...");
+  };
 
   return (
     <section
@@ -54,7 +70,7 @@ export default function PostForm({ diary }: { diary?: DiaryCardProps | null }) {
       <ProfileDropdown currentUser={currentUser} />
       <p className="text-center mt-6 mb-2">Write your heart out</p>
       <div className="flex justify-center gap-12">
-        <form className="flex flex-col gap-1">
+        <form className="flex flex-col gap-1" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col w-full lg:w-[500px]">
             <label className="font-">Title for this day</label>
             <textarea

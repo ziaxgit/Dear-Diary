@@ -2,7 +2,10 @@
     - wanted to use onSuccess but it was deprecated, 
     - solved by using useEffect with data as dependency
 
-- made Title and Subtitle components to be reusable
+- made Title, Subtitle, Profile dropdown components to be reusable
+
+- found it tricky to incorporate zod, react form and useMutation all in one
+
 
 - TO DO list
  - create a post diary component
