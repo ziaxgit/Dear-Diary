@@ -99,6 +99,7 @@ export default function DiaryCard({
       <div className="flex justify-end mt-4 gap-2">
         <button
           className=" bg-red-700 px-2 p-1 rounded-md flex gap-1 items-center hover:bg-red-500"
+          disabled={deleteDiaryMutation.isPending}
           onClick={() => handleDeleteDiaryClick(diary.diary_id)}
         >
           <MdDeleteForever color="white" size={16} />
