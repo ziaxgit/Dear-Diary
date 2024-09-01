@@ -76,6 +76,7 @@ export const deleteDiaryFn = async (
   currentUser: CurrentUserProps | null,
   diary_id: number
 ) => {
+  console.log("deleting...", { diary_id });
   const response = await fetch(`http://localhost:5000/diaries/${diary_id}`, {
     method: "DELETE",
     headers: {

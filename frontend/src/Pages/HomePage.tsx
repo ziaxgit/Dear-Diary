@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useContext } from "react"; 
+import { useContext } from "react";
 import { UserContext } from "../App";
 import DiaryCard, { DiaryCardProps } from "../Components/DiaryCard";
 import { convertDate } from "../utils/dateTimeConverter.ts";
@@ -15,7 +15,7 @@ export default function HomePage() {
   const [selectedDiary, setSelectedDiary] =
     React.useState<DiaryCardProps | null>(null);
 
-  const { isPending, isError, data, error } = useQuery({
+  const { isPending, isError, data, error, refetch } = useQuery({
     queryKey: ["diaries"],
     queryFn: () => fetchDiariesFn(currentUser),
   });
@@ -83,7 +83,12 @@ export default function HomePage() {
             })}
         </div>
         {selectedDiary && (
-          <DiaryCard key={selectedDiary?.diary_id} diary={selectedDiary} />
+          <DiaryCard
+            key={selectedDiary?.diary_id}
+            diary={selectedDiary}
+            refetch={refetch}
+            setSelectedDiary={setSelectedDiary}
+          />
         )}
       </div>
     </section>

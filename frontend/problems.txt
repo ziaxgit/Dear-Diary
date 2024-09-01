@@ -8,7 +8,10 @@
     - solved by writing useMutatiion outside onSubmit
 
 - after deleting a diary, the diary list is not updated
-    - solved by using useEffect with data as dependency
+    - found out about refetch method
+    - didnt work as refetch was called onClick
+    - moved refetch inside onSuccess
+    - worked but ui didnt update
 
 - TO DO list
  - create a post diary component

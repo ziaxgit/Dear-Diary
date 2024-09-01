@@ -18,10 +18,20 @@ export interface DiaryCardProps {
 import { BiEdit } from "react-icons/bi";
 import { useMutation } from "@tanstack/react-query";
 import { deleteDiaryFn } from "../utils/apiCalls.js";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { UserContext } from "../App.js";
 
-export default function DiaryCard({ diary }: { diary: DiaryCardProps }) {
+interface DiaryCardComponentProps {
+  diary: DiaryCardProps;
+  refetch: () => void;
+  setSelectedDiary: React.Dispatch<React.SetStateAction<DiaryCardProps | null>>;
+}
+
+export default function DiaryCard({
+  diary,
+  refetch,
+  setSelectedDiary,
+}: DiaryCardComponentProps) {
   const navigate = useNavigate();
   const handleEditDiaryClick = (diary: DiaryCardProps) => {
     navigate("/diary", {
@@ -35,12 +45,14 @@ export default function DiaryCard({ diary }: { diary: DiaryCardProps }) {
     mutationFn: (diary_id: number) => deleteDiaryFn(currentUser, diary_id),
     onSuccess: () => {
       toast.success("Diary deleted successfully");
-      navigate("/home");
+      // navigate("/home");
+      refetch();
     },
   });
 
   const handleDeleteDiaryClick = (diary_id: number) => {
     deleteDiaryMutation.mutate(diary_id);
+    setSelectedDiary(null);
   };
 
   return (
