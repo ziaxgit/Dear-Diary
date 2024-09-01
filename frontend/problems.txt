@@ -5,7 +5,10 @@
 - made Title, Subtitle, Profile dropdown components to be reusable
 
 - found it tricky to incorporate zod, react form and useMutation all in one
+    - solved by writing useMutatiion outside onSubmit
 
+- after deleting a diary, the diary list is not updated
+    - solved by using useEffect with data as dependency
 
 - TO DO list
  - create a post diary component

@@ -55,23 +55,36 @@ export const editDiaryFn = async (
   currentUser: CurrentUserProps | null,
   diary: DiaryCardProps
 ) => {
-  try {
-    const response = await fetch(
-      `http://localhost:5000/diaries/${diary.diary_id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${currentUser?.token}`,
-        },
-        body: JSON.stringify(diary),
-      }
-    );
-    return response.json();
-  } catch (error) {
-    console.log(error);
+  const response = await fetch(
+    `http://localhost:5000/diaries/${diary.diary_id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${currentUser?.token}`,
+      },
+      body: JSON.stringify(diary),
+    }
+  );
+  if (!response.ok) {
+    throw new Error("Error updating diary");
   }
-  // if (!response.ok) {
-  //   throw new Error("Error updating diary");
-  // }
+  return response.json();
+};
+
+export const deleteDiaryFn = async (
+  currentUser: CurrentUserProps | null,
+  diary_id: number
+) => {
+  const response = await fetch(`http://localhost:5000/diaries/${diary_id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${currentUser?.token}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Error deleting diary");
+  }
+  return response.json();
 };

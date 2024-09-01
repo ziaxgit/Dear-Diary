@@ -17,7 +17,6 @@ const postFormSchema = z.object({
   did_not_go_well: z.string().optional(),
   image_url: z.string().optional(),
   made_me_smile: z.string().optional(),
-  diary_id: z.number().optional(),
 });
 
 type PostDataType = z.infer<typeof postFormSchema>;
@@ -66,7 +65,10 @@ export default function PostForm() {
   console.log(errors);
 
   const onSubmit: SubmitHandler<PostDataType> = async (diary) => {
-    const diaryWithUserId = { ...diary, user_id: currentUser?.user_id };
+    const diaryWithUserId: DiaryCardProps = {
+      ...diary,
+      user_id: currentUser?.user_id,
+    };
     console.log(diaryWithUserId);
     if (state) {
       diaryWithUserId.diary_id = state.diary_id;
