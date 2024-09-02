@@ -58,7 +58,7 @@ export default function DiaryCard({
   return (
     <div key={diary.diary_id} className="bg-white bg-opacity-80 col-span-9 p-4">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl">{diary.title}</h1>
+        <h1 className="text-2xl">📜 {diary.title}</h1>
         <p className="text-sm text-gray-500">
           {diary.created && convertDate(diary.created)}
         </p>
@@ -67,23 +67,23 @@ export default function DiaryCard({
         <div className="col-span-8 flex flex-col gap-4">
           {diary.grateful_for && (
             <>
-              <span className="text-md -mb-4">What am i grateful for? 😇</span>
+              <span className="text-md -mb-4">😇 What am i grateful for?</span>
               <p className="text-md font-light">{diary.grateful_for}</p>
             </>
           )}
           {diary.did_not_go_well && (
             <>
-              <span className="text-md -mb-4">What did not go well? 😔 </span>
+              <span className="text-md -mb-4">😔 What did not go well?</span>
               <p className="text-md font-light">{diary.did_not_go_well}</p>
             </>
           )}
           {diary.made_me_smile && (
             <>
-              <span className="text-md -mb-4">What made me smile? 😁</span>
+              <span className="text-md -mb-4">😁 What made me smile?</span>
               <p className="text-md font-light">{diary.made_me_smile}</p>
             </>
           )}
-          <span className="text-md -mb-4">Details 💬</span>
+          <span className="text-md -mb-4">💬 Details</span>
           <p className="text-md font-light">{diary.description}</p>
         </div>
         {diary.image_url && (
