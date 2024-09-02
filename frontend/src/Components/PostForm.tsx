@@ -92,7 +92,7 @@ export default function PostForm() {
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="flex flex-col w-full lg:w-[500px]">
-            <label className="font-">Title for this day</label>
+            <label className="font-">Title for diary</label>
             <textarea
               rows={1}
               {...register("title")}
@@ -106,8 +106,10 @@ export default function PostForm() {
             )}
           </div>
           <div className="flex flex-col gap-1 w-full lg:w-[500px]">
-            <label className="font-">What am I grateful for?</label>
-
+            <label className="font-">
+              What am I grateful for?{" "}
+              <span className="text-sm font-light">(optional)</span>
+            </label>
             <textarea
               defaultValue={state?.grateful_for}
               {...register("grateful_for")}
@@ -117,7 +119,10 @@ export default function PostForm() {
             />
           </div>
           <div className="flex flex-col gap-1 w-full lg:w-[500px]">
-            <label className="font-">What made me smile?</label>
+            <label className="font-">
+              What made me smile?{" "}
+              <span className="text-sm font-light">(optional)</span>
+            </label>
             <textarea
               defaultValue={state?.made_me_smile}
               {...register("made_me_smile")}
@@ -127,7 +132,10 @@ export default function PostForm() {
             />
           </div>
           <div className="flex flex-col gap-1 w-full lg:w-[500px]">
-            <label className="font-">What did not go well?</label>
+            <label className="font-">
+              What did not go well?{" "}
+              <span className="text-sm font-light">(optional)</span>
+            </label>
             <textarea
               defaultValue={state?.did_not_go_well}
               {...register("did_not_go_well")}
@@ -151,7 +159,9 @@ export default function PostForm() {
             )}
           </div>
           <div className="flex flex-col gap-1 w-full md:w-[500px]">
-            <label className="font-">Image URL</label>
+            <label className="font-">
+              Image URL <span className="text-sm font-light">(optional)</span>
+            </label>
             <input
               defaultValue={state?.image_url}
               {...register("image_url")}
