@@ -8,14 +8,15 @@ import { IoAdd } from "react-icons/io5";
 import { fetchDiariesFn } from "../utils/apiCalls.js";
 import { useNavigate } from "react-router-dom";
 import ProfileDropdown from "../Components/ProfileDropdown.tsx";
+import ErrorPage from "../Components/ErrorPage.tsx";
 
 export default function HomePage() {
   const { currentUser } = useContext(UserContext);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
   const [selectedDiary, setSelectedDiary] =
     React.useState<DiaryCardProps | null>(null);
 
-  const { isPending, isError, data, error, refetch } = useQuery({
+  const { isPending, isError, data, refetch } = useQuery({
     queryKey: ["diaries"],
     queryFn: () => fetchDiariesFn(currentUser),
   });
@@ -31,7 +32,7 @@ export default function HomePage() {
   }
 
   if (isError) {
-    return <p>Error: {error.message}</p>;
+    return <ErrorPage />;
   }
 
   console.log({ selectedDiary });

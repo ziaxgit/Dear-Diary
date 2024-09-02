@@ -5,7 +5,7 @@ import Register from "./Components/Register";
 import React, { useState, createContext } from "react";
 import { Toaster } from "react-hot-toast";
 import PostForm from "./Components/PostForm";
-
+import ErrorPage from "./Components/ErrorPage";
 export interface User {
   user_id: number;
   name: string;
@@ -43,7 +43,7 @@ export default function App() {
               <Route path="/home" element={<HomePage />} />
               <Route path="/register" element={<Register />} />
               <Route path="/diary" element={<PostForm />} />
-              <Route path="/*" element={<div>Uh oh.. you are lost</div>} />
+              <Route path="/*" element={<ErrorPage />} />
             </Routes>
           </React.Suspense>
         </UserContext.Provider>
