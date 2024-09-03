@@ -11,7 +11,7 @@ export interface DiaryCardProps {
   did_not_go_well?: string | undefined;
   image_url?: string | undefined;
   made_me_smile?: string | undefined;
-  user_id?: number | undefined;
+  user_id?: number;
   diary_id: number;
 }
 
@@ -45,7 +45,6 @@ export default function DiaryCard({
     mutationFn: (diary_id: number) => deleteDiaryFn(currentUser, diary_id),
     onSuccess: () => {
       toast.success("Diary deleted successfully");
-      // navigate("/home");
       refetch();
     },
   });
@@ -64,7 +63,7 @@ export default function DiaryCard({
         </p>
       </div>
       <div className="grid grid-cols-12">
-        <div className="col-span-8 flex flex-col gap-4">
+        <div className="col-span-8 flex flex-col gap-4 text-balance">
           {diary.grateful_for && (
             <>
               <span className="text-md -mb-4">😇 What am i grateful for?</span>
@@ -87,9 +86,9 @@ export default function DiaryCard({
           <p className="text-md font-light">{diary.description}</p>
         </div>
         {diary.image_url && (
-          <div className="col-span-4">
+          <div className="col-span-4 rounded-">
             <img
-              className="w-[300px] max-h-[300px] object-contain"
+              className="w-[300px] max-h-[300px] object-contain rounded-md"
               src={diary.image_url}
               alt="diary image"
             />

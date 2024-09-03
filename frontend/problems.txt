@@ -11,7 +11,6 @@
     - found out about refetch method
     - didnt work as refetch was called onClick
     - moved refetch inside onSuccess
-    - worked but ui didnt update
 
 - TO DO list
  - create a post diary component

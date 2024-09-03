@@ -62,8 +62,6 @@ export default function PostForm() {
     },
   });
 
-  console.log(errors);
-
   const onSubmit: SubmitHandler<PostDataType> = async (diary) => {
     const diaryWithUserId: DiaryCardProps = {
       ...diary,
@@ -92,7 +90,7 @@ export default function PostForm() {
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="flex flex-col w-full lg:w-[500px]">
-            <label className="font-">Title for diary</label>
+            <label>Title for diary</label>
             <textarea
               rows={1}
               {...register("title")}
@@ -106,7 +104,7 @@ export default function PostForm() {
             )}
           </div>
           <div className="flex flex-col gap-1 w-full lg:w-[500px]">
-            <label className="font-">
+            <label>
               What am I grateful for?{" "}
               <span className="text-sm font-light">(optional)</span>
             </label>
@@ -119,7 +117,7 @@ export default function PostForm() {
             />
           </div>
           <div className="flex flex-col gap-1 w-full lg:w-[500px]">
-            <label className="font-">
+            <label>
               What made me smile?{" "}
               <span className="text-sm font-light">(optional)</span>
             </label>
@@ -132,7 +130,7 @@ export default function PostForm() {
             />
           </div>
           <div className="flex flex-col gap-1 w-full lg:w-[500px]">
-            <label className="font-">
+            <label>
               What did not go well?{" "}
               <span className="text-sm font-light">(optional)</span>
             </label>
@@ -145,7 +143,7 @@ export default function PostForm() {
             />
           </div>
           <div className="flex flex-col gap-1 w-full md:w-[500px]">
-            <label className="font-">Detailed description</label>
+            <label>Detailed description</label>
             <textarea
               rows={2}
               defaultValue={state?.description}
@@ -159,7 +157,7 @@ export default function PostForm() {
             )}
           </div>
           <div className="flex flex-col gap-1 w-full md:w-[500px]">
-            <label className="font-">
+            <label>
               Image URL <span className="text-sm font-light">(optional)</span>
             </label>
             <input

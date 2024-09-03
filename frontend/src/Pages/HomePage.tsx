@@ -12,7 +12,7 @@ import ErrorPage from "../Components/ErrorPage.tsx";
 
 export default function HomePage() {
   const { currentUser } = useContext(UserContext);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [selectedDiary, setSelectedDiary] =
     React.useState<DiaryCardProps | null>(null);
 
@@ -28,14 +28,12 @@ export default function HomePage() {
   }, [data]);
 
   if (isPending) {
-    return <p>Loading...</p>;
+    return <p className="text-center mt-10 text-2xl">Loading...</p>;
   }
 
   if (isError) {
     return <ErrorPage />;
   }
-
-  console.log({ selectedDiary });
 
   const handleDiaryClick = (diary: DiaryCardProps) => {
     setSelectedDiary(diary);
@@ -54,7 +52,10 @@ export default function HomePage() {
       <ProfileDropdown currentUser={currentUser} />
 
       <p className="mt-8 text-center text-xl">
-        Hi {currentUser?.name}! Welcome to your diaries{" "}
+        Hi {currentUser?.name}!{" "}
+        {data.diaries.length > 0
+          ? "Welcome to your diaries "
+          : "Get started by creating a new diary "}
         <span className="text-xl">📖</span>
       </p>
       <button
@@ -65,11 +66,12 @@ export default function HomePage() {
         <p className=" text-white text-lg font-">New diary</p>
       </button>
       <div className=" grid grid-cols-12 bg-white border-[2px] border-gray-50 ">
-        <div className="col-span-3 divide-y-[1px] border-r-[1px] border-gray-200">
+        <div className="col-span-3 divide-y-[1px] border-r-[1px] border-gray-200 flex flex-col flex-wrap">
           {data &&
             data.diaries.map((diary: DiaryCardProps) => {
               return (
                 <div
+                  key={diary.diary_id}
                   className={`p-4 cursor-pointer hover:bg-sky-100 ${
                     diary.diary_id === selectedDiary?.diary_id && "bg-sky-200"
                   }`}

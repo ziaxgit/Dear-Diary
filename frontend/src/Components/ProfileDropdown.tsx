@@ -52,7 +52,7 @@ export default function ProfileDropdown({
               {currentUser?.email}
             </p>
             <button
-              className="bg-gray-300 w-full text-black rounded-md"
+              className="bg-gray-200 w-full text-black rounded-md hover:bg-gray-400"
               onClick={handleLogOut}
             >
               Log out

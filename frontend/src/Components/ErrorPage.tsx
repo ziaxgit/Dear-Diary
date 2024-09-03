@@ -17,7 +17,7 @@ export default function ErrorPage() {
         <p className="text-3xl">404 PAGE NOT FOUND</p>
       </div>
       <div className="text-center mt-10">
-        <p className="text-xl mb-2">Uh oh.. you seem to be lost.</p>
+        <p className="text-xl mb-2">An unexpected error occured</p>
         <p className="text-xl">
           Please{" "}
           <a href="/login" className="text-blue-600 font-medium">
