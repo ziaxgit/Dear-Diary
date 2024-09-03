@@ -2,7 +2,7 @@
 ###### Your safe space to journal and self reflect
 This is a full stack web application that allows you to journal and reflect upon your journey in life.
 ### Tech Stack
-**Frontend:** React with TypeScript, React-hook-form, ZOD, Tanstack React Query  
+**Frontend:** React with TypeScript, React Hook Form, ZOD, React Query, React Hot Toast, Vite
 **Backend:** Python with Quart, Quart_Auth, Quart_Schema
 
 ### User Stories
