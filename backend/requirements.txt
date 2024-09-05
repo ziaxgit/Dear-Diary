@@ -32,5 +32,6 @@ quart-schema==0.20.0
 taskgroup==0.0.0a4
 tomli==2.0.1
 typing_extensions==4.12.2
+uvicorn==0.30.6
 Werkzeug==3.0.4
 wsproto==1.2.0

@@ -25,9 +25,9 @@ app.config["QUART_AUTH_MODE"] = "bearer"
 
 auth_manager = QuartAuth(app)
 
+
 DATABASE_PATH = os.path.join("/data", "database.db")
 QuartDB(app, url="sqlite:///data/database.db")
-# QuartDB(app, url=f"sqlite:////{DATABASE_PATH}")
 
 QuartSchema(
     app,
