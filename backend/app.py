@@ -26,8 +26,11 @@ app.config["QUART_AUTH_MODE"] = "bearer"
 auth_manager = QuartAuth(app)
 
 
-DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///data/database.db")
-QuartDB(app, url=DATABASE_URL)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+database_path = os.path.join(current_dir, "data", "database.db")
+
+# Now you can use this path in your QuartDB configuration
+QuartDB(app, url=f"sqlite:///{database_path}")
 
 QuartSchema(
     app,
