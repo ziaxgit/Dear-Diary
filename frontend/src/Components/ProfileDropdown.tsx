@@ -5,7 +5,6 @@ import { logOutUserFn } from "../utils/apiCalls.js";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-// import { User } from "../App.js";
 
 export interface User {
   user_id: number;
@@ -32,6 +31,7 @@ export default function ProfileDropdown({
       navigate("/login");
     }, 2500);
   };
+
   return (
     <div className="relative pt-5 dropdown">
       <div className="text-center -mt-5">
